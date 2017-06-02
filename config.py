@@ -74,6 +74,24 @@ def configure(keymap):
         # keymap_global["U0-3"] = keymap.command_RecordPlay
         # keymap_global["U0-4"] = keymap.command_RecordClear
 
+        keymap_global["W-Space"] = "C-S-Space" # Win+Space => Control+Shift+Space (Launchy)
+        # keymap_global["A-Space"] = "243"     # Alt+Space => Zenkaku/Hankaku (243=Zenkaku/Hankaku)
+        keymap_global["C-BackSlash"] = "243"   # C+\ => Zenkaku/Hankaku (243=Zenkaku/Hankaku)
+
+        def toggleWindowMaximized():
+            wnd = keymap.getTopLevelWindow()
+            if wnd:
+                if wnd.isMaximized():
+                    wnd.restore()
+                elif wnd and wnd.isMinimized():
+                    wnd.maximize()
+                else:
+                    wnd.maximize()
+
+        # keymap_global["C-S-Z"] = "F11" # Window Maximize <=> Restore Toggle (F11 is FullScreen...)
+        # keymap_global["C-S-Z"] = toggleWindowMaximized # Window Maximize <=> Restore Toggle (like Right Zoom)
+        keymap_global["W-A-E"] = toggleWindowMaximized # Window Maximize <=> Restore Toggle (like Right Zoom)
+
     # # USER0-F1 : Test of launching application
     # if 1:
     #     keymap_global["U0-F1"] = keymap.ShellExecuteCommand(None, "notepad.exe", "", "")
