@@ -32,206 +32,205 @@ def configure(keymap):
 
     # --------------------------------------------------------------------
 
-    # Simple key replacement
-    keymap.replaceKey("LWin", 235)
-    keymap.replaceKey("RWin", 255)
+    # # Simple key replacement
+    # keymap.replaceKey("LWin", 235)
+    # keymap.replaceKey("RWin", 255)
 
-    # User modifier key definition
-    keymap.defineModifier(235, "User0")
+    # # User modifier key definition
+    # keymap.defineModifier(235, "User0")
 
     # Global keymap which affects any windows
     if 1:
         keymap_global = keymap.defineWindowKeymap()
 
-        # USER0-Up/Down/Left/Right : Move active window by 10 pixel unit
-        keymap_global["U0-Left"] = keymap.MoveWindowCommand(-10, 0)
-        keymap_global["U0-Right"] = keymap.MoveWindowCommand(+10, 0)
-        keymap_global["U0-Up"] = keymap.MoveWindowCommand(0, -10)
-        keymap_global["U0-Down"] = keymap.MoveWindowCommand(0, +10)
+        # # USER0-Up/Down/Left/Right : Move active window by 10 pixel unit
+        # keymap_global["U0-Left"] = keymap.MoveWindowCommand(-10, 0)
+        # keymap_global["U0-Right"] = keymap.MoveWindowCommand(+10, 0)
+        # keymap_global["U0-Up"] = keymap.MoveWindowCommand(0, -10)
+        # keymap_global["U0-Down"] = keymap.MoveWindowCommand(0, +10)
 
-        # USER0-Shift-Up/Down/Left/Right : Move active window by 1 pixel unit
-        keymap_global["U0-S-Left"] = keymap.MoveWindowCommand(-1, 0)
-        keymap_global["U0-S-Right"] = keymap.MoveWindowCommand(+1, 0)
-        keymap_global["U0-S-Up"] = keymap.MoveWindowCommand(0, -1)
-        keymap_global["U0-S-Down"] = keymap.MoveWindowCommand(0, +1)
+        # # USER0-Shift-Up/Down/Left/Right : Move active window by 1 pixel unit
+        # keymap_global["U0-S-Left"] = keymap.MoveWindowCommand(-1, 0)
+        # keymap_global["U0-S-Right"] = keymap.MoveWindowCommand(+1, 0)
+        # keymap_global["U0-S-Up"] = keymap.MoveWindowCommand(0, -1)
+        # keymap_global["U0-S-Down"] = keymap.MoveWindowCommand(0, +1)
 
-        # USER0-Ctrl-Up/Down/Left/Right : Move active window to screen edges
-        keymap_global["U0-C-Left"] = keymap.MoveWindowToMonitorEdgeCommand(0)
-        keymap_global["U0-C-Right"] = keymap.MoveWindowToMonitorEdgeCommand(2)
-        keymap_global["U0-C-Up"] = keymap.MoveWindowToMonitorEdgeCommand(1)
-        keymap_global["U0-C-Down"] = keymap.MoveWindowToMonitorEdgeCommand(3)
+        # # USER0-Ctrl-Up/Down/Left/Right : Move active window to screen edges
+        # keymap_global["U0-C-Left"] = keymap.MoveWindowToMonitorEdgeCommand(0)
+        # keymap_global["U0-C-Right"] = keymap.MoveWindowToMonitorEdgeCommand(2)
+        # keymap_global["U0-C-Up"] = keymap.MoveWindowToMonitorEdgeCommand(1)
+        # keymap_global["U0-C-Down"] = keymap.MoveWindowToMonitorEdgeCommand(3)
 
         # Clipboard history related
         keymap_global["C-S-Z"] = keymap.command_ClipboardList     # Open the clipboard history list
         keymap_global["C-S-X"] = keymap.command_ClipboardRotate   # Move the most recent history to tail
-        keymap_global["C-S-A-X"] = keymap.command_ClipboardRemove   # Remove the most recent history
-        keymap.quote_mark = "> "                                      # Mark for quote pasting
+        keymap_global["C-S-A-X"] = keymap.command_ClipboardRemove # Remove the most recent history
+        keymap.quote_mark = "> "                                  # Mark for quote pasting
 
-        # Keyboard macro
-        keymap_global["U0-0"] = keymap.command_RecordToggle
-        keymap_global["U0-1"] = keymap.command_RecordStart
-        keymap_global["U0-2"] = keymap.command_RecordStop
-        keymap_global["U0-3"] = keymap.command_RecordPlay
-        keymap_global["U0-4"] = keymap.command_RecordClear
+        # # Keyboard macro
+        # keymap_global["U0-0"] = keymap.command_RecordToggle
+        # keymap_global["U0-1"] = keymap.command_RecordStart
+        # keymap_global["U0-2"] = keymap.command_RecordStop
+        # keymap_global["U0-3"] = keymap.command_RecordPlay
+        # keymap_global["U0-4"] = keymap.command_RecordClear
 
-
-    # USER0-F1 : Test of launching application
-    if 1:
-        keymap_global["U0-F1"] = keymap.ShellExecuteCommand(None, "notepad.exe", "", "")
-
-
-    # USER0-F2 : Test of sub thread execution using JobQueue/JobItem
-    if 1:
-        def command_JobTest():
-
-            def jobTest(job_item):
-                shellExecute(None, "notepad.exe", "", "")
-
-            def jobTestFinished(job_item):
-                print("Done.")
-
-            job_item = JobItem(jobTest, jobTestFinished)
-            JobQueue.defaultQueue().enqueue(job_item)
-
-        keymap_global["U0-F2"] = command_JobTest
+    # # USER0-F1 : Test of launching application
+    # if 1:
+    #     keymap_global["U0-F1"] = keymap.ShellExecuteCommand(None, "notepad.exe", "", "")
 
 
-    # Test of Cron (periodic sub thread procedure)
-    if 0:
-        def cronPing(cron_item):
-            os.system("ping -n 3 www.google.com")
-
-        cron_item = CronItem(cronPing, 3.0)
-        CronTable.defaultCronTable().add(cron_item)
-
-
-    # USER0-F : Activation of specific window
-    if 1:
-        keymap_global["U0-F"] = keymap.ActivateWindowCommand("cfiler.exe", "CfilerWindowClass")
-
-
-    # USER0-E : Activate specific window or launch application if the window doesn't exist
-    if 1:
-        def command_ActivateOrExecuteNotepad():
-            wnd = Window.find("Notepad", None)
-            if wnd:
-                if wnd.isMinimized():
-                    wnd.restore()
-                wnd = wnd.getLastActivePopup()
-                wnd.setForeground()
-            else:
-                executeFunc = keymap.ShellExecuteCommand(None, "notepad.exe", "", "")
-                executeFunc()
-
-        keymap_global["U0-E"] = command_ActivateOrExecuteNotepad
+    # # USER0-F2 : Test of sub thread execution using JobQueue/JobItem
+    # if 1:
+    #     def command_JobTest():
+    #
+    #         def jobTest(job_item):
+    #             shellExecute(None, "notepad.exe", "", "")
+    #
+    #         def jobTestFinished(job_item):
+    #             print("Done.")
+    #
+    #         job_item = JobItem(jobTest, jobTestFinished)
+    #         JobQueue.defaultQueue().enqueue(job_item)
+    #
+    #     keymap_global["U0-F2"] = command_JobTest
 
 
-    # Ctrl-Tab : Switching between console related windows
-    if 1:
+    # # Test of Cron (periodic sub thread procedure)
+    # if 0:
+    #     def cronPing(cron_item):
+    #         os.system("ping -n 3 www.google.com")
 
-        def isConsoleWindow(wnd):
-            if wnd.getClassName() in ("PuTTY","MinTTY","CkwWindowClass"):
-                return True
-            return False
-
-        keymap_console = keymap.defineWindowKeymap(check_func=isConsoleWindow)
-
-        def command_SwitchConsole():
-
-            root = pyauto.Window.getDesktop()
-            last_console = None
-
-            wnd = root.getFirstChild()
-            while wnd:
-                if isConsoleWindow(wnd):
-                    last_console = wnd
-                wnd = wnd.getNext()
-
-            if last_console:
-                last_console.setForeground()
-
-        keymap_console["C-TAB"] = command_SwitchConsole
+    #     cron_item = CronItem(cronPing, 3.0)
+    #     CronTable.defaultCronTable().add(cron_item)
 
 
-    # USER0-Space : Application launcher using custom list window
-    if 1:
-        def command_PopApplicationList():
-
-            # If the list window is already opened, just close it
-            if keymap.isListWindowOpened():
-                keymap.cancelListWindow()
-                return
-
-            def popApplicationList():
-
-                applications = [
-                    ("Notepad", keymap.ShellExecuteCommand(None, "notepad.exe", "", "")),
-                    ("Paint", keymap.ShellExecuteCommand(None, "mspaint.exe", "", "")),
-                ]
-
-                websites = [
-                    ("Google", keymap.ShellExecuteCommand(None, "https://www.google.co.jp/", "", "")),
-                    ("Facebook", keymap.ShellExecuteCommand(None, "https://www.facebook.com/", "", "")),
-                    ("Twitter", keymap.ShellExecuteCommand(None, "https://twitter.com/", "", "")),
-                ]
-
-                listers = [
-                    ("App",     cblister_FixedPhrase(applications)),
-                    ("WebSite", cblister_FixedPhrase(websites)),
-                ]
-
-                item, mod = keymap.popListWindow(listers)
-
-                if item:
-                    item[1]()
-
-            # Because the blocking procedure cannot be executed in the key-hook,
-            # delayed-execute the procedure by delayedCall().
-            keymap.delayedCall(popApplicationList, 0)
-
-        keymap_global["U0-Space"] = command_PopApplicationList
+    # # USER0-F : Activation of specific window
+    # if 1:
+    #     keymap_global["U0-F"] = keymap.ActivateWindowCommand("cfiler.exe", "CfilerWindowClass")
 
 
-    # USER0-Alt-Up/Down/Left/Right/Space/PageUp/PageDown : Virtul mouse operation by keyboard
-    if 1:
-        keymap_global["U0-A-Left"] = keymap.MouseMoveCommand(-10,0)
-        keymap_global["U0-A-Right"] = keymap.MouseMoveCommand(10,0)
-        keymap_global["U0-A-Up"] = keymap.MouseMoveCommand(0,-10)
-        keymap_global["U0-A-Down"] = keymap.MouseMoveCommand(0,10)
-        keymap_global["D-U0-A-Space"] = keymap.MouseButtonDownCommand('left')
-        keymap_global["U-U0-A-Space"] = keymap.MouseButtonUpCommand('left')
-        keymap_global["U0-A-PageUp"] = keymap.MouseWheelCommand(1.0)
-        keymap_global["U0-A-PageDown"] = keymap.MouseWheelCommand(-1.0)
-        keymap_global["U0-A-Home"] = keymap.MouseHorizontalWheelCommand(-1.0)
-        keymap_global["U0-A-End"] = keymap.MouseHorizontalWheelCommand(1.0)
+    # # USER0-E : Activate specific window or launch application if the window doesn't exist
+    # if 1:
+    #     def command_ActivateOrExecuteNotepad():
+    #         wnd = Window.find("Notepad", None)
+    #         if wnd:
+    #             if wnd.isMinimized():
+    #                 wnd.restore()
+    #             wnd = wnd.getLastActivePopup()
+    #             wnd.setForeground()
+    #         else:
+    #             executeFunc = keymap.ShellExecuteCommand(None, "notepad.exe", "", "")
+    #             executeFunc()
+    #
+    #     keymap_global["U0-E"] = command_ActivateOrExecuteNotepad
 
 
-    # Execute the System commands by sendMessage
-    if 1:
-        def close():
-            wnd = keymap.getTopLevelWindow()
-            wnd.sendMessage(WM_SYSCOMMAND, SC_CLOSE)
+    # # Ctrl-Tab : Switching between console related windows
+    # if 1:
+    #
+    #     def isConsoleWindow(wnd):
+    #         if wnd.getClassName() in ("PuTTY","MinTTY","CkwWindowClass"):
+    #             return True
+    #         return False
+    #
+    #     keymap_console = keymap.defineWindowKeymap(check_func=isConsoleWindow)
+    #
+    #     def command_SwitchConsole():
+    #
+    #         root = pyauto.Window.getDesktop()
+    #         last_console = None
+    #
+    #         wnd = root.getFirstChild()
+    #         while wnd:
+    #             if isConsoleWindow(wnd):
+    #                 last_console = wnd
+    #             wnd = wnd.getNext()
+    #
+    #         if last_console:
+    #             last_console.setForeground()
+    #
+    #     keymap_console["C-TAB"] = command_SwitchConsole
 
-        def screenSaver():
-            wnd = keymap.getTopLevelWindow()
-            wnd.sendMessage(WM_SYSCOMMAND, SC_SCREENSAVE)
 
-        keymap_global["U0-C"] = close              # Close the window
-        keymap_global["U0-S"] = screenSaver        # Start the screen-saver
+    # # USER0-Space : Application launcher using custom list window
+    # if 1:
+    #     def command_PopApplicationList():
+    #
+    #         # If the list window is already opened, just close it
+    #         if keymap.isListWindowOpened():
+    #             keymap.cancelListWindow()
+    #             return
+    #
+    #         def popApplicationList():
+    #
+    #             applications = [
+    #                 ("Notepad", keymap.ShellExecuteCommand(None, "notepad.exe", "", "")),
+    #                 ("Paint", keymap.ShellExecuteCommand(None, "mspaint.exe", "", "")),
+    #             ]
+    #
+    #             websites = [
+    #                 ("Google", keymap.ShellExecuteCommand(None, "https://www.google.co.jp/", "", "")),
+    #                 ("Facebook", keymap.ShellExecuteCommand(None, "https://www.facebook.com/", "", "")),
+    #                 ("Twitter", keymap.ShellExecuteCommand(None, "https://twitter.com/", "", "")),
+    #             ]
+    #
+    #             listers = [
+    #                 ("App",     cblister_FixedPhrase(applications)),
+    #                 ("WebSite", cblister_FixedPhrase(websites)),
+    #             ]
+    #
+    #             item, mod = keymap.popListWindow(listers)
+    #
+    #             if item:
+    #                 item[1]()
+    #
+    #         # Because the blocking procedure cannot be executed in the key-hook,
+    #         # delayed-execute the procedure by delayedCall().
+    #         keymap.delayedCall(popApplicationList, 0)
+    #
+    #     keymap_global["U0-Space"] = command_PopApplicationList
 
 
-    # Test of text input
-    if 1:
-        keymap_global["U0-H"] = keymap.InputTextCommand("Hello / こんにちは")
+    # # USER0-Alt-Up/Down/Left/Right/Space/PageUp/PageDown : Virtul mouse operation by keyboard
+    # if 1:
+    #     keymap_global["U0-A-Left"] = keymap.MouseMoveCommand(-10,0)
+    #     keymap_global["U0-A-Right"] = keymap.MouseMoveCommand(10,0)
+    #     keymap_global["U0-A-Up"] = keymap.MouseMoveCommand(0,-10)
+    #     keymap_global["U0-A-Down"] = keymap.MouseMoveCommand(0,10)
+    #     keymap_global["D-U0-A-Space"] = keymap.MouseButtonDownCommand('left')
+    #     keymap_global["U-U0-A-Space"] = keymap.MouseButtonUpCommand('left')
+    #     keymap_global["U0-A-PageUp"] = keymap.MouseWheelCommand(1.0)
+    #     keymap_global["U0-A-PageDown"] = keymap.MouseWheelCommand(-1.0)
+    #     keymap_global["U0-A-Home"] = keymap.MouseHorizontalWheelCommand(-1.0)
+    #     keymap_global["U0-A-End"] = keymap.MouseHorizontalWheelCommand(1.0)
 
 
-    # For Edit box, assigning Delete to C-D, etc
-    if 1:
-        keymap_edit = keymap.defineWindowKeymap(class_name="Edit")
+    # # Execute the System commands by sendMessage
+    # if 1:
+    #     def close():
+    #         wnd = keymap.getTopLevelWindow()
+    #         wnd.sendMessage(WM_SYSCOMMAND, SC_CLOSE)
+    #
+    #     def screenSaver():
+    #         wnd = keymap.getTopLevelWindow()
+    #         wnd.sendMessage(WM_SYSCOMMAND, SC_SCREENSAVE)
+    #
+    #     keymap_global["U0-C"] = close              # Close the window
+    #     keymap_global["U0-S"] = screenSaver        # Start the screen-saver
 
-        keymap_edit["C-D"] = "Delete"              # Delete
-        keymap_edit["C-H"] = "Back"                # Backspace
-        keymap_edit["C-K"] = "S-End","C-X"         # Removing following text
+
+    # # Test of text input
+    # if 1:
+    #     keymap_global["U0-H"] = keymap.InputTextCommand("Hello / こんにちは")
+
+
+    # # For Edit box, assigning Delete to C-D, etc
+    # if 1:
+    #     keymap_edit = keymap.defineWindowKeymap(class_name="Edit")
+    #
+    #     keymap_edit["C-D"] = "Delete"              # Delete
+    #     keymap_edit["C-H"] = "Back"                # Backspace
+    #     keymap_edit["C-K"] = "S-End","C-X"         # Removing following text
 
 
     # Customize Notepad as Emacs-ish
