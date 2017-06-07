@@ -244,13 +244,22 @@ def configure(keymap):
     #     keymap_global["U0-H"] = keymap.InputTextCommand("Hello / こんにちは")
 
 
-    # # For Edit box, assigning Delete to C-D, etc
-    # if 1:
-    #     keymap_edit = keymap.defineWindowKeymap(class_name="Edit")
-    #
-    #     keymap_edit["C-D"] = "Delete"              # Delete
-    #     keymap_edit["C-H"] = "Back"                # Backspace
-    #     keymap_edit["C-K"] = "S-End","C-X"         # Removing following text
+    # For Edit box, assigning Delete to C-D, etc
+    if 1:
+        keymap_edit = keymap.defineWindowKeymap(class_name="Edit")
+
+        keymap_edit["C-D"] = "Delete"              # Delete
+        keymap_edit["C-H"] = "Back"                # Backspace
+        keymap_edit["C-K"] = "S-End","C-X"         # Removing following text
+
+        keymap_edit["C-P"] = "Up"                  # Move cursor up
+        keymap_edit["C-N"] = "Down"                # Move cursor down
+        keymap_edit["C-F"] = "Right"               # Move cursor right
+        keymap_edit["C-B"] = "Left"                # Move cursor left
+        keymap_edit["C-A"] = "Home"                # Move to beginning of line
+        keymap_edit["C-E"] = "End"                 # Move to end of line
+
+        keymap_edit["C-M"] = "Enter"               # Enter
 
 
     # Customize Notepad as Emacs-ish
@@ -286,6 +295,41 @@ def configure(keymap):
         keymap_notepad["C-Y"] = "C-V"              # Paste
         keymap_notepad["C-X"]["C-C"] = "A-F4"      # Exit
 
+    if 1:
+        target_apps = [
+            "firefox.exe",
+        ]
+
+        for target_app in target_apps:
+
+            app_keymap = keymap.defineWindowKeymap(exe_name=target_app, class_name="Edit")
+
+            # Define Ctrl-X as the first key of multi-stroke keys
+            app_keymap["C-X"] = keymap.defineMultiStrokeKeymap("C-X")
+
+            app_keymap["C-P"] = "Up"               # Move cursor up
+            app_keymap["C-N"] = "Down"             # Move cursor down
+            app_keymap["C-F"] = "Right"            # Move cursor right
+            app_keymap["C-B"] = "Left"             # Move cursor left
+            app_keymap["C-A"] = "Home"             # Move to beginning of line
+            app_keymap["C-E"] = "End"              # Move to end of line
+            app_keymap["A-F"] = "C-Right"          # Word right
+            app_keymap["A-B"] = "C-Left"           # Word left
+            app_keymap["C-V"] = "PageDown"         # Page down
+            app_keymap["A-V"] = "PageUp"           # page up
+            app_keymap["A-Comma"] = "C-Home"       # Beginning of the document
+            app_keymap["A-Period"] = "C-End"       # End of the document
+            app_keymap["C-X"]["C-F"] = "C-O"       # Open file
+            app_keymap["C-X"]["C-S"] = "C-S"       # Save
+            app_keymap["C-X"]["C-W"] = "A-F","A-A" # Save as
+            app_keymap["C-X"]["U"] = "C-Z"         # Undo
+            app_keymap["C-S"] = "C-F"              # Search
+            app_keymap["A-X"] = "C-G"              # Jump to specified line number
+            app_keymap["C-X"]["H"] = "C-A"         # Select all
+            app_keymap["C-W"] = "C-X"              # Cut
+            app_keymap["A-W"] = "C-C"              # Copy
+            app_keymap["C-Y"] = "C-V"              # Paste
+            app_keymap["C-X"]["C-C"] = "A-F4"      # Exit
 
     # Customizing clipboard history list
     if 1:
