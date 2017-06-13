@@ -331,6 +331,11 @@ def configure(keymap):
             app_keymap["C-Y"] = "C-V"              # Paste
             app_keymap["C-X"]["C-C"] = "A-F4"      # Exit
 
+            app_keymap["C-D"] = "Delete"           # Delete
+            app_keymap["C-H"] = "Back"             # Backspace
+            app_keymap["C-K"] = "S-End","C-X"      # Removing following text
+            app_keymap["C-M"] = "Enter"            # Enter
+
         for target_exe_and_class_name in target_apps:
             exe_name = target_exe_and_class_name[0]
             class_name = target_exe_and_class_name[1]
