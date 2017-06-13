@@ -297,12 +297,12 @@ def configure(keymap):
 
     if 1:
         target_apps = [
-            "firefox.exe",
+            ["firefox.exe", "Edit"],
+            ["chrome.exe", None],# Chrome_WidgetWin_1
+            ["slack.exe", None], # Chrome_WidgetWin_1
         ]
 
-        for target_app in target_apps:
-
-            app_keymap = keymap.defineWindowKeymap(exe_name=target_app, class_name="Edit")
+        def install_emacs_DlLike_keybindings(app_keymap):
 
             # Define Ctrl-X as the first key of multi-stroke keys
             app_keymap["C-X"] = keymap.defineMultiStrokeKeymap("C-X")
@@ -330,6 +330,14 @@ def configure(keymap):
             app_keymap["A-W"] = "C-C"              # Copy
             app_keymap["C-Y"] = "C-V"              # Paste
             app_keymap["C-X"]["C-C"] = "A-F4"      # Exit
+
+        for target_exe_and_class_name in target_apps:
+            exe_name = target_exe_and_class_name[0]
+            class_name = target_exe_and_class_name[1]
+
+            app_keymap = keymap.defineWindowKeymap(exe_name=exe_name, class_name=class_name)
+
+            install_emacs_DlLike_keybindings(app_keymap)
 
     # Customizing clipboard history list
     if 1:
@@ -461,3 +469,10 @@ def configure(keymap):
             ("Others", cblister_FixedPhrase(other_items)),
         ]
 
+    if 1:
+        window = keymap.getTopLevelWindow()
+
+        if window:
+            print("process name: %s" % window.getProcessName())
+            print("class name:   %s" % window.getClassName())
+            print("text:         %s" % window.getText())
