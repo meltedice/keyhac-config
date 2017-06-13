@@ -302,7 +302,7 @@ def configure(keymap):
             ["slack.exe", None], # Chrome_WidgetWin_1
         ]
 
-        def install_emacs_DlLike_keybindings(app_keymap):
+        def install_emacs_like_keybindings(app_keymap):
 
             # Define Ctrl-X as the first key of multi-stroke keys
             app_keymap["C-X"] = keymap.defineMultiStrokeKeymap("C-X")
@@ -342,7 +342,7 @@ def configure(keymap):
 
             app_keymap = keymap.defineWindowKeymap(exe_name=exe_name, class_name=class_name)
 
-            install_emacs_DlLike_keybindings(app_keymap)
+            install_emacs_like_keybindings(app_keymap)
 
     # Customizing clipboard history list
     if 1:
