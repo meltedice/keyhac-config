@@ -300,6 +300,8 @@ def configure(keymap):
             ["firefox.exe", "Edit"],
             ["chrome.exe", None],# Chrome_WidgetWin_1
             ["slack.exe", None], # Chrome_WidgetWin_1
+            ["Wunderlist.exe", None], # Windows.UI.Core.CoreWindow
+            ["Simplenote.exe", None], # Chrome_WidgetWin_1
         ]
 
         def install_emacs_like_keybindings(app_keymap):
