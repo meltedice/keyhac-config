@@ -37,9 +37,17 @@ def configure(keymap):
     # # Simple key replacement
     # keymap.replaceKey("LWin", 235)
     # keymap.replaceKey("RWin", 255)
-
+    
     # # User modifier key definition
     # keymap.defineModifier(235, "User0")
+
+    # 挙動がおかしいのでレジストリで
+    # keymap.replaceKey(29, "LCtrl")    # 変換/Henkan     => LCtrl
+    # keymap.replaceKey(28, "RCtrl")    # 無変換/Muhenkan => RCtrl
+    # keymap.replaceKey(243, "LAlt")    # 半角/全角       => LAlt
+    # keymap.replaceKey(244, "LAlt")    # 半角/全角       => LAlt
+    # keymap.replaceKey(242, "RAlt")    # Kana            => RAlt
+    # keymap.replaceKey("LAlt", "LWin") # LAlt            => RWin
 
     # Global keymap which affects any windows
     if 1:
