@@ -310,6 +310,7 @@ def configure(keymap):
             ["slack.exe", None], # Chrome_WidgetWin_1
             ["Wunderlist.exe", None], # Windows.UI.Core.CoreWindow
             ["Simplenote.exe", None], # Chrome_WidgetWin_1
+            ["Babylon.exe", None], # Internet Explorer_Server
         ]
 
         def install_emacs_like_keybindings(app_keymap):
