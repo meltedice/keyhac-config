@@ -306,6 +306,7 @@ def configure(keymap):
     if 1:
         target_apps = [
             ["firefox.exe", "Edit"],
+            ["thunderbird.exe", "MozillaWindowClass"],
             ["chrome.exe", None],# Chrome_WidgetWin_1
             ["slack.exe", None], # Chrome_WidgetWin_1
             ["Wunderlist.exe", None], # Windows.UI.Core.CoreWindow
